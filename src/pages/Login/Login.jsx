@@ -94,11 +94,15 @@ const Login = () => {
         
         console.log('⏳ Waiting for auth state to update...');
       } else {
-        setError(result?.error || 'Login failed. Please try again.');
+        const errorMessage = result?.error || 'Login failed. Please check your credentials.';
+        setError(errorMessage);
+        toast.error(errorMessage);
       }
     } catch (error) {
       console.error('❌ Login error:', error);
-      setError(error.message || 'An unexpected error occurred.');
+      const errorMessage = error.message || 'An unexpected error occurred.';
+      setError(errorMessage);
+      toast.error(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -198,87 +202,88 @@ const Login = () => {
         >
           <div className="max-w-md mx-auto">
             <motion.div 
-              className="mb-8 text-center"
+              className="text-center mb-8"
               variants={itemVariants}
             >
-              <h2 className="text-3xl font-bold text-gray-900 mb-2">Welcome Back</h2>
-              <p className="text-gray-600">
-                Sign in to continue your culinary journey
+              <h2 className="text-3xl font-extrabold text-gray-900">
+                Sign In
+              </h2>
+              <p className="mt-2 text-sm text-gray-600">
+                Access your account
               </p>
             </motion.div>
-            
-            {/* Login Type Tabs */}
-            <motion.div 
-              className="flex mb-6 bg-gray-100 rounded-xl p-1"
-              variants={itemVariants}
-            >
-              <motion.button
-                type="button"
+
+            {/* Login Tabs */}
+            <div className="flex justify-center rounded-lg bg-gray-100 p-1 mb-6">
+              <button
                 onClick={() => handleTabChange('customer')}
-                className={`flex-1 flex items-center justify-center space-x-2 py-3 px-4 rounded-lg font-medium transition-all duration-200 ${
-                  loginType === 'customer' 
-                    ? 'bg-white text-orange-600 shadow-sm' 
-                    : 'text-gray-600 hover:text-gray-800'
+                className={`w-full px-3 py-2 text-sm font-medium rounded-md transition-colors ${
+                  loginType === 'customer'
+                    ? 'bg-orange-600 text-white shadow'
+                    : 'text-gray-600 hover:bg-gray-200'
                 }`}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
               >
-                {React.createElement(Icons.user, { className: "w-5 h-5" })}
-                <span>Customer</span>
-              </motion.button>
-              <motion.button
-                type="button"
+                Customer
+              </button>
+              <button
                 onClick={() => handleTabChange('admin')}
-                className={`flex-1 flex items-center justify-center space-x-2 py-3 px-4 rounded-lg font-medium transition-all duration-200 ${
-                  loginType === 'admin' 
-                    ? 'bg-white text-orange-600 shadow-sm' 
-                    : 'text-gray-600 hover:text-gray-800'
+                className={`w-full px-3 py-2 text-sm font-medium rounded-md transition-colors ${
+                  loginType === 'admin'
+                    ? 'bg-orange-600 text-white shadow'
+                    : 'text-gray-600 hover:bg-gray-200'
                 }`}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
               >
-                {React.createElement(Icons.admin, { className: "w-5 h-5" })}
-                <span>Admin</span>
-              </motion.button>
-            </motion.div>
-            
-            {/* Error Message */}
-            {error && (
-              <motion.div 
-                className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center space-x-3"
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-              >
-                {React.createElement(Icons.warning, { className: "w-5 h-5 text-red-600 flex-shrink-0" })}
-                <span className="text-red-700 text-sm">{error}</span>
-              </motion.div>
-            )}
+                Admin
+              </button>
+            </div>
 
-            <motion.form 
-              onSubmit={handleSubmit} 
-              className="space-y-6"
-              variants={itemVariants}
-            >
-              {/* Email/Username Input */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  {loginType === 'customer' ? 'Username or Email' : 'Admin Email'}
-                </label>
-                <motion.input
-                  type={loginType === 'customer' ? 'text' : 'email'}
-                  name={loginType === 'customer' ? 'identity' : 'email'}
-                  value={loginType === 'customer' ? formData.identity : formData.email}
-                  onChange={handleChange}
-                  required
-                  placeholder={loginType === 'customer' ? 'Enter your username or email' : 'admin@restaurant.com'}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors"
-                  whileFocus={{ scale: 1.02 }}
-                />
-              </div>
+            <motion.form onSubmit={handleSubmit} className="space-y-6" variants={itemVariants}>
+              {error && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg relative text-center"
+                  role="alert"
+                >
+                  <span className="block sm:inline">{error}</span>
+                </motion.div>
+              )}
 
-              {/* Password Input */}
-              <div>
+              {loginType === 'customer' ? (
+                <div className="relative">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Username or Email
+                  </label>
+                  <motion.input
+                    type="text"
+                    name="identity"
+                    value={formData.identity}
+                    onChange={handleChange}
+                    required
+                    placeholder="Enter your username or email"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors"
+                    whileFocus={{ scale: 1.02 }}
+                  />
+                </div>
+              ) : (
+                <div className="relative">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Admin Email
+                  </label>
+                  <motion.input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                    placeholder="admin@restaurant.com"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors"
+                    whileFocus={{ scale: 1.02 }}
+                  />
+                </div>
+              )}
+
+              <div className="relative">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Password
                 </label>
@@ -305,7 +310,6 @@ const Login = () => {
                 </div>
               </div>
 
-              {/* Submit Button */}
               <motion.button 
                 type="submit"
                 disabled={loading}

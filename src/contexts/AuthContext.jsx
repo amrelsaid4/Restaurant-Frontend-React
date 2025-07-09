@@ -247,7 +247,7 @@ export const AuthProvider = ({ children }) => {
             login, 
             adminLogin, 
             logout, 
-            checkAuthStatus,
+            checkAuth: checkAuthStatus,
             updateAuthState
         }}>
             {children}

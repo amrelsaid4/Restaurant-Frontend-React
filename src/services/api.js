@@ -147,6 +147,25 @@ export const authAPI = {
     return makeAuthenticatedRequest('POST', '/api/register/', userData);
   },
 
+  verifyPhone: async (verificationData) => {
+    console.log('📡 Phone verification API call');
+    const response = await api.post('/api/verify-phone/', verificationData);
+    
+    // On successful verification, backend should return session_key and user_data
+    if (response.data.session_key && response.data.user) {
+      localStorage.setItem('session_key', response.data.session_key);
+      localStorage.setItem('user_data', JSON.stringify(response.data.user));
+      console.log('💾 Session data saved after phone verification.');
+    }
+    
+    return response.data;
+  },
+
+  resendVerificationCode: async (data) => {
+    console.log('📡 Resend verification code API call');
+    return api.post('/api/resend-verify-code/', data);
+  },
+
   logout: async () => {
     try {
       console.log('📡 Logout API call');

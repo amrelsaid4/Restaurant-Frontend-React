@@ -18,6 +18,7 @@ import Cart from './pages/Cart/Cart';
 import Checkout from './pages/Checkout/Checkout';
 import Login from './pages/Login/Login';
 import Register from './pages/Register/Register';
+import VerifyPhone from './pages/VerifyPhone/VerifyPhone';
 import Profile from './pages/Profile/Profile';
 import Orders from './pages/Orders';
 import OrderSuccess from './pages/OrderSuccess';
@@ -130,6 +131,7 @@ function App() {
                   {/* Login and Register pages (without Layout) */}
                   <Route path="/login" element={<Login />} />
                   <Route path="/register" element={<Register />} />
+                  <Route path="/verify-phone" element={<VerifyPhone />} />
                   
                   {/* Redirect for non-existent pages */}
                   <Route path="*" element={<Navigate to="/" />} />

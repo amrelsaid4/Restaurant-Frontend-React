@@ -85,15 +85,50 @@ function Register() {
     
     try {
       const { confirmPassword, ...userData } = formData;
-      await authAPI.register(userData);
+      const response = await authAPI.register(userData);
+
+      // DEV-ONLY: Display verification code if backend sends it
+      if (response && response.verification_code) {
+        toast.success(`DEV: Verification Code is ${response.verification_code}`, { duration: 10000 });
+      }
       
-      toast.success('Account created successfully! Please log in.');
-      navigate('/login');
+      toast.success('Account created successfully! Please verify your phone number.');
+      navigate('/verify-phone', { 
+        state: { 
+          email: formData.email,
+          phone: formData.phone
+        } 
+      });
     } catch (error) {
+      console.error('Registration failed:', error.response?.data || error.message);
       if (error.response?.data) {
         const serverErrors = error.response.data;
-        setErrors(serverErrors);
-        toast.error('Registration failed. Please check your information.');
+
+        // Handle generic vs field-specific errors
+        if (serverErrors.error) {
+            const errorMsg = serverErrors.error.toLowerCase();
+            if (errorMsg.includes('username')) {
+                setErrors({ username: serverErrors.error });
+            } else if (errorMsg.includes('email')) {
+                setErrors({ email: serverErrors.error });
+            } else if (errorMsg.includes('phone number already exists')) {
+                // Smartly handle the case where the user didn't complete verification
+                toast.success("It looks like you've tried registering before. We've sent a new code!");
+                navigate('/verify-phone', {
+                    state: {
+                        email: formData.email,
+                        phone: formData.phone
+                    }
+                });
+                return; // Stop further execution
+            } else {
+                setErrors({ form: serverErrors.error });
+            }
+            toast.error(serverErrors.error);
+        } else {
+            setErrors(serverErrors);
+            toast.error('Registration failed. Please check your information.');
+        }
       } else {
         toast.error('Network error. Please try again.');
       }
@@ -229,6 +264,16 @@ function Register() {
               className="space-y-4"
               variants={itemVariants}
             >
+              {errors.form && (
+                  <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg relative mb-4"
+                      role="alert"
+                  >
+                      <span className="block sm:inline">{errors.form}</span>
+                  </motion.div>
+              )}
               {/* Name Fields */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
