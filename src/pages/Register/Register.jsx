@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import axios from 'axios';
 import toast from 'react-hot-toast';
+import { authAPI } from '../../services/api';
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -84,23 +84,11 @@ function Register() {
     setLoading(true);
     
     try {
-      const response = await axios.post('http://127.0.0.1:8000/api/register/', {
-        username: formData.username,
-        email: formData.email,
-        password: formData.password,
-        first_name: formData.first_name,
-        last_name: formData.last_name,
-        phone: formData.phone,
-        address: formData.address
-      });
+      const { confirmPassword, ...userData } = formData;
+      await authAPI.register(userData);
       
-      toast.success('Account created successfully! Please verify your phone number.');
-      navigate('/verify-phone', { 
-        state: { 
-          phone: formData.phone,
-          email: formData.email 
-        } 
-      });
+      toast.success('Account created successfully! Please log in.');
+      navigate('/login');
     } catch (error) {
       if (error.response?.data) {
         const serverErrors = error.response.data;

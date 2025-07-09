@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import AdminNavbar from '../../components/admin/AdminNavbar';
+import { adminAPI } from '../../services/api';
 
 const AdminDashboard = () => {
   const [stats, setStats] = useState(null);
@@ -18,12 +18,12 @@ const AdminDashboard = () => {
     try {
       setLoading(true);
       const [statsRes, ordersRes] = await Promise.all([
-        axios.get('http://127.0.0.1:8000/api/admin/dashboard/'),
-        axios.get('http://127.0.0.1:8000/api/admin/orders/?limit=5')
+        adminAPI.getDashboardStats(),
+        adminAPI.getOrders({ limit: 5 })
       ]);
       
-      setStats(statsRes.data);
-      setRecentOrders(ordersRes.data.results || ordersRes.data);
+      setStats(statsRes);
+      setRecentOrders(ordersRes.results || ordersRes);
     } catch (error) {
       toast.error('Failed to load dashboard data');
     } finally {
