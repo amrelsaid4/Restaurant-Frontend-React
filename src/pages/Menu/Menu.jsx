@@ -251,7 +251,7 @@ const Menu = () => {
       <PageHeader 
         title="Our Delicious Menu"
         subtitle="Explore our wide range of dishes, crafted with the freshest ingredients."
-        backgroundImage={menuHeroImage}
+        image={menuHeroImage}
       />
 
       {/* Filters Bar */}
