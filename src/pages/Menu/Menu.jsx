@@ -251,7 +251,7 @@ const Menu = () => {
     return () => {
       isMounted = false;
     };
-  }, [showAlert]);
+  }, []);
 
   return (
     <div className="bg-gray-50">
