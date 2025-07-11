@@ -250,216 +250,39 @@ export const Icons = {
   lockSolid: LockSolidIcon,
   unlock: LockOpenIcon,
   security: ShieldCheckIcon,
-  securitySolid: ShieldSolidIcon,
   shield: ShieldCheckIcon,
-  protected: LockClosedIcon,
+  shieldSolid: ShieldSolidIcon,
+  
+  // ✏️ الإجراءات الأساسية
+  add: PlusIcon,
+  plus: PlusIcon,
+  create: PlusIcon,
+  remove: MinusIcon,
+  minus: MinusIcon,
+  edit: PencilIcon,
+  update: PencilIcon,
+  delete: TrashIcon,
+  trash: TrashIcon,
   
   // 🔍 البحث والتنقل
   search: MagnifyingGlassIcon,
-  find: MagnifyingGlassIcon,
   menu: Bars3Icon,
-  hamburger: Bars3Icon,
-  bars: Bars3Icon,
   close: XMarkIcon,
-  
-  // إضافة الأيقونات المفقودة
-  eye: EyeIcon,
-  eyeOff: EyeIcon, // مؤقتاً
-  lightning: BoltIcon,
-  admin: Cog6ToothIcon,
-  x: XMarkIcon,
-  
-  // ➡️ الأسهم والاتجاهات
-  arrowLeft: ArrowLeftIcon,
-  arrowRight: ArrowRightIcon,
-  back: ArrowLeftIcon,
-  next: ArrowRightIcon,
-  forward: ArrowRightIcon,
-  backward: ArrowLeftIcon,
   chevronDown: ChevronDownIcon,
   chevronUp: ChevronUpIcon,
   chevronLeft: ChevronLeftIcon,
   chevronRight: ChevronRightIcon,
-  expand: ChevronDownIcon,
-  collapse: ChevronUpIcon,
+  arrowLeft: ArrowLeftIcon,
+  back: ArrowLeftIcon,
+  arrowRight: ArrowRightIcon,
+  forward: ArrowRightIcon,
   
-  // ➕ الإجراءات الأساسية
-  add: PlusIcon,
-  plus: PlusIcon,
-  create: PlusIcon,
-  subtract: MinusIcon,
-  minus: MinusIcon,
-  edit: PencilIcon,
-  pencil: PencilIcon,
-  modify: PencilIcon,
-  trash: TrashIcon,
-  delete: TrashIcon,
-  view: EyeIcon,
-  see: EyeIcon,
-  show: EyeIcon,
-  
-  // 📊 الإحصائيات والتحليلات
-  chart: ChartBarIcon,
-  analytics: ChartBarIcon,
-  stats: ChartBarIcon,
-  graph: ChartBarIcon,
-  trend: ArrowTrendingUpIcon,
-  trendUp: ArrowTrendingUpIcon,
-  trendDown: ArrowTrendingDownIcon,
-  increase: ArrowTrendingUpIcon,
-  decrease: ArrowTrendingDownIcon,
-  
-  // 📄 المستندات والملفات
-  document: DocumentIcon,
-  file: DocumentIcon,
-  list: ListBulletIcon,
-  bullet: ListBulletIcon,
-  clipboard: ClipboardDocumentListIcon,
-  
-  // 🎨 الوسائط والمحتوى
-  photo: PhotoIcon,
-  image: PhotoIcon,
-  picture: PhotoIcon,
-  camera: CameraIcon,
-  video: VideoCameraIcon,
-  play: PlayIcon,
-  playSolid: PlaySolidIcon,
-  pause: PauseIcon,
-  pauseSolid: PauseSolidIcon,
-  stop: StopIcon,
-  stopSolid: StopSolidIcon,
-  
-  // 🔊 الصوت
-  speaker: SpeakerWaveIcon,
-  speakerSolid: SpeakerSolidIcon,
-  sound: SpeakerWaveIcon,
-  mute: SpeakerXMarkIcon,
-  microphone: MicrophoneIcon,
-  micSolid: MicSolidIcon,
-  mic: MicrophoneIcon,
-  
-  // 💬 التواصل والمحادثة
-  chat: ChatBubbleLeftRightIcon,
-  chatSolid: ChatSolidIcon,
-  message: ChatBubbleLeftRightIcon,
-  conversation: ChatBubbleLeftRightIcon,
-  send: PaperAirplaneIcon,
-  
-  // 🌟 التميز والجوائز
-  trophy: TrophyIcon,
-  trophySolid: TrophySolidIcon,
-  award: TrophyIcon,
-  prize: TrophyIcon,
-  winner: TrophyIcon,
-  flag: FlagIcon,
-  flagSolid: FlagSolidIcon,
-  achievement: TrophyIcon,
-  
-  // ✨ التأثيرات والديكور
-  sparkles: SparklesIcon,
-  sparklesSolid: SparklesSolidIcon,
-  magic: SparklesIcon,
-  shine: SparklesIcon,
-  gift: GiftIcon,
-  present: GiftIcon,
-  tag: TagIcon,
-  label: TagIcon,
-  
-  // 🌙 الإضاءة والمظهر
-  sun: SunIcon,
-  sunSolid: SunSolidIcon,
-  light: SunIcon,
-  moon: MoonIcon,
-  moonSolid: MoonSolidIcon,
-  dark: MoonIcon,
-  bulb: LightBulbIcon,
-  idea: LightBulbIcon,
-  
-  // 💻 الأجهزة والتقنية
-  computer: ComputerDesktopIcon,
-  desktop: ComputerDesktopIcon,
-  mobile: DevicePhoneMobileIcon,
-  tablet: DeviceTabletIcon,
-  device: ComputerDesktopIcon,
-  
-  // 🌐 الشبكة والاتصال
-  globe: GlobeAltIcon,
-  world: GlobeAltIcon,
-  internet: GlobeAltIcon,
-  wifi: WifiIcon,
-  signal: SignalIcon,
-  connection: WifiIcon,
-  
-  // 🔋 الطاقة والبطارية
-  battery: BoltIcon,
-  power: PowerIcon,
-  energy: BoltIcon,
-  
-  // 📚 التعليم والمعرفة
-  book: BookOpenIcon,
-  bookSolid: BookSolidIcon,
-  read: BookOpenIcon,
-  education: AcademicCapIcon,
-  educationSolid: CapSolidIcon,
-  learn: BookOpenIcon,
-  
-  // 🔗 الروابط والمشاركة
-  link: LinkIcon,
-  url: LinkIcon,
+  // ❤️ المشاركة والطباعة
   share: ShareIcon,
-  export: ShareIcon,
-  
-  // 📤 التحميل والرفع
-  upload: CloudArrowUpIcon,
-  cloudUp: CloudArrowUpIcon,
-  download: ArrowDownTrayIcon,
-  save: ArrowDownTrayIcon,
-  import: ArrowUpTrayIcon,
-  
-  // 😊 التعبيرات والمشاعر
-  smile: FaceSmileIcon,
-  happy: FaceSmileIcon,
-  sad: FaceFrownIcon,
-  frown: FaceFrownIcon,
-  hand: HandRaisedIcon,
-  wave: HandRaisedIcon,
-  
-  // 📊 التخطيط والعرض
-  grid: Squares2X2Icon,
-  squares: Squares2X2Icon,
-  table: TableCellsIcon,
-  cells: TableCellsIcon,
-  columns: ViewColumnsIcon,
-  layout: ViewColumnsIcon,
-  stack: Square3Stack3DIcon,
-  layers: Square3Stack3DIcon,
-  
-  // ⚙️ المزيد من الخيارات
-  more: EllipsisVerticalIcon,
-  moreHorizontal: EllipsisHorizontalIcon,
-  options: EllipsisVerticalIcon,
-  dots: EllipsisVerticalIcon,
-  
-  // 🖨️ الطباعة والأدوات
   print: PrinterIcon,
-  printer: PrinterIcon,
+  document: DocumentIcon,
   
-  // 🏆 خاص بالمطعم
-  dish: CakeIcon,
-  food: CakeIcon,
-  meal: CakeIcon,
-  recipe: BookOpenIcon,
-  ingredient: TagIcon,
-  portion: Square3Stack3DIcon,
-  serving: CakeIcon,
-  vegetarian: SparklesIcon,
-  spicy: FireIcon,
-  popular: TrophyIcon,
-  featured: StarIcon,
-  category: Squares2X2Icon,
-  categories: Square3Stack3DIcon,
-  
-  // 👤 User Authentication and Admin
+  // ⚙️ الإعدادات والإجراءات
   login: ArrowRightIcon,
   logout: PowerIcon,
   admin: Cog6ToothIcon,
@@ -475,35 +298,140 @@ export const Icons = {
   power: PowerIcon,
   
   // ... rest of existing icons ...
+  
+  // 🏆 الجوائز والإنجازات
+  trophy: TrophyIcon,
+  trophySolid: TrophySolidIcon,
+  award: TrophyIcon,
+  
+  // 🏳️ الأعلام
+  flag: FlagIcon,
+  flagSolid: FlagSolidIcon,
+  
+  // 📈 الرسوم البيانية والاتجاهات
+  chart: ChartBarIcon,
+  stats: ChartBarIcon,
+  trendingUp: ArrowTrendingUpIcon,
+  trendingDown: ArrowTrendingDownIcon,
+  
+  // 💡 الأفكار والإضاءة
+  idea: LightBulbIcon,
+  bulb: LightBulbIcon,
+  sparkles: SparklesIcon,
+  magic: SparklesIcon,
+  
+  // ☀️ الطقس والمظهر
+  sun: SunIcon,
+  sunSolid: SunSolidIcon,
+  moon: MoonIcon,
+  moonSolid: MoonSolidIcon,
+  lightMode: SunIcon,
+  darkMode: MoonIcon,
+  
+  // 💻 الأجهزة
+  desktop: ComputerDesktopIcon,
+  laptop: ComputerDesktopIcon,
+  mobile: DevicePhoneMobileIcon,
+  tablet: DeviceTabletIcon,
+  
+  // 🌐 الإنترنت والاتصال
+  globe: GlobeAltIcon,
+  website: GlobeAltIcon,
+  wifi: WifiIcon,
+  signal: SignalIcon,
+  
+  // 🎥 الوسائط والتحكم
+  play: PlayIcon,
+  playSolid: PlaySolidIcon,
+  pause: PauseIcon,
+  pauseSolid: PauseSolidIcon,
+  stop: StopIcon,
+  stopSolid: StopSolidIcon,
+  mediaForward: ForwardIcon,
+  mediaBackward: BackwardIcon,
+  
+  // 🔊 الصوت
+  volumeUp: SpeakerWaveIcon,
+  volumeUpSolid: SpeakerSolidIcon,
+  volumeOff: SpeakerXMarkIcon,
+  mic: MicrophoneIcon,
+  micSolid: MicSolidIcon,
+  
+  // 📷 الكاميرا والفيديو
+  camera: CameraIcon,
+  photo: PhotoIcon,
+  image: PhotoIcon,
+  video: VideoCameraIcon,
+  videoSolid: VideoSolidIcon,
+  
+  // 💬 التواصل والدردشة
+  chat: ChatBubbleLeftRightIcon,
+  chatSolid: ChatSolidIcon,
+  message: ChatBubbleLeftRightIcon,
+  send: PaperAirplaneIcon,
+  
+  // 👋 الإيماءات والوجوه
+  hand: HandRaisedIcon,
+  smile: FaceSmileIcon,
+  happy: FaceSmileIcon,
+  frown: FaceFrownIcon,
+  sad: FaceFrownIcon,
+  
+  // 📚 التعليم والمعرفة
+  book: BookOpenIcon,
+  bookSolid: BookSolidIcon,
+  learn: AcademicCapIcon,
+  capSolid: CapSolidIcon,
+  
+  // 📂 الملفات والتحميل
+  upload: CloudArrowUpIcon,
+  download: ArrowDownTrayIcon,
+  save: ArrowDownTrayIcon,
+  export: ArrowUpTrayIcon,
+  link: LinkIcon,
+  attachment: LinkIcon,
+  
+  // 🖼️ الواجهة والتخطيط
+  grid: Squares2X2Icon,
+  list: ListBulletIcon,
+  table: TableCellsIcon,
+  columns: ViewColumnsIcon,
+  stack: Square3Stack3DIcon,
+  
+  // ... المزيد من الأيقونات
+  ellipsisV: EllipsisVerticalIcon,
+  ellipsisH: EllipsisHorizontalIcon,
+  more: EllipsisHorizontalIcon,
 };
 
+
 /**
- * دالة مساعدة للحصول على أيقونة بناءً على الاسم
- * @param {string} iconName - اسم الأيقونة
- * @param {boolean} solid - هل تريد النسخة المملوءة
- * @returns {React.Component} - مكون الأيقونة
+ * دالة مساعدة للحصول على مكون أيقونة بالاسم
+ * @param {string} iconName - اسم الأيقونة المطلوب (مثال: 'home', 'user')
+ * @param {boolean} solid - هل تريد الإصدار المصمت من الأيقونة؟
+ * @returns {React.ComponentType} - مكون الأيقونة
  */
 export const getIcon = (iconName, solid = false) => {
-  const solidName = `${iconName}Solid`;
-  
-  if (solid && Icons[solidName]) {
-    return Icons[solidName];
+  if (solid) {
+    const solidName = `${iconName}Solid`;
+    if (Icons[solidName]) {
+      return Icons[solidName];
+    }
   }
-  
-  return Icons[iconName] || Icons.question;
+  return Icons[iconName] || QuestionMarkCircleIcon; // أيقونة افتراضية عند عدم العثور
 };
 
 /**
- * دالة للتحقق من وجود أيقونة
+ * دالة للتحقق من وجود أيقونة بالاسم المحدد
  * @param {string} iconName - اسم الأيقونة
- * @returns {boolean} - هل الأيقونة موجودة
+ * @returns {boolean} - true إذا كانت الأيقونة موجودة
  */
 export const hasIcon = (iconName) => {
-  return Boolean(Icons[iconName]);
+  return iconName in Icons;
 };
 
 /**
- * الحصول على جميع أسماء الأيقونات المتاحة
+ * دالة للحصول على قائمة بجميع أسماء الأيقونات المتاحة
  * @returns {string[]} - مصفوفة بأسماء الأيقونات
  */
 export const getAvailableIcons = () => {
@@ -511,11 +439,13 @@ export const getAvailableIcons = () => {
 };
 
 /**
- * دالة useIcon لاستخدام الأيقونات في المكونات
- * @returns {Object} - كائن يحتوي على جميع الأيقونات
+ * Hook مخصص لاستخدام الأيقونات بسهولة داخل المكونات
+ * @returns {{getIcon: Function, hasIcon: Function, Icons: Object}}
  */
 export const useIcon = () => {
-  return Icons;
-};
-
-export default Icons; 
+  return {
+    getIcon,
+    hasIcon,
+    Icons
+  };
+}; 
