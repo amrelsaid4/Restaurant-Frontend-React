@@ -499,29 +499,30 @@ const DishDetail = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.1 * index }}
                 >
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="flex items-center space-x-3">
-                      <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center">
-                        <span className="text-orange-600 font-medium">
-                          {review.user_name ? review.user_name.charAt(0).toUpperCase() : review.customer?.user?.first_name?.charAt(0)?.toUpperCase() || 'U'}
+                  <div className="flex items-start space-x-4">
+                    <div className="w-12 h-12 rounded-full bg-orange-100 flex items-center justify-center font-bold text-orange-600 text-xl">
+                      {review.user?.first_name ? review.user.first_name.charAt(0).toUpperCase() : 'A'}
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="font-semibold text-gray-800">
+                            {review.user?.first_name ? `${review.user.first_name} ${review.user.last_name || ''}`.trim() : 'Anonymous'}
+                          </p>
+                          <div className="flex items-center">
+                            {renderStars(review.rating)}
+                            <span className="ml-2 text-sm text-gray-500">
+                              ({review.rating.toFixed(1)})
+                            </span>
+                          </div>
+                        </div>
+                        <span className="text-sm text-gray-500">
+                          {new Date(review.created_at).toLocaleDateString()}
                         </span>
                       </div>
-                      <div>
-                        <div className="font-medium text-gray-900">
-                          {review.user_name || `${review.customer?.user?.first_name || 'Anonymous'} ${review.customer?.user?.last_name || ''}`}
-                        </div>
-                        <div className="flex items-center">
-                          {renderStars(review.rating)}
-                        </div>
-                      </div>
+                      <p className="mt-2 text-gray-600">{review.comment}</p>
                     </div>
-                    <span className="text-sm text-gray-500">
-                      {new Date(review.created_at).toLocaleDateString()}
-                    </span>
                   </div>
-                  {review.comment && (
-                    <p className="text-gray-700 mt-2">{review.comment}</p>
-                  )}
                 </motion.div>
               ))
             ) : (
