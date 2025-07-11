@@ -25,6 +25,12 @@
   }
 }
 
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+}
+
 /* Basic components only */
 @layer components {
   .btn-primary {

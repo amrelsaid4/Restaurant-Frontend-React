@@ -2,6 +2,10 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { PhoneIcon, EnvelopeIcon, MapPinIcon } from '@heroicons/react/24/outline';
 import { useAlert } from '../../contexts/AlertContext';
+import PageHeader from '../../components/layout/PageHeader';
+import { contactAPI } from '../../services/api'; // Import the contact API
+
+const contactHeroImage = 'https://images.unsplash.com/photo-1534536281715-e28d76689b4d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80';
 
 const Contact = () => {
   const { showSuccess, showError } = useAlert();
@@ -22,36 +26,27 @@ const Contact = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-
-    // Simulate API call
-    setTimeout(() => {
-      setIsSubmitting(false);
+    try {
+      await contactAPI.sendMessage(formData);
       showSuccess(`Thank you, ${formData.name}! Your message has been sent.`, 'Message Sent!');
       setFormData({ name: '', email: '', message: '' });
-    }, 1500);
+    } catch (error) {
+      showError(error.response?.data?.detail || 'Failed to send message. Please try again later.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
     <div className="bg-gray-50">
-      {/* Header Section */}
-      <motion.section 
-        className="bg-orange-600 text-white"
-        initial={{ y: -50, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.5 }}
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
-          <h1 className="text-5xl font-extrabold tracking-tight">
-            Get In Touch
-          </h1>
-          <p className="mt-4 text-lg text-orange-100">
-            We'd love to hear from you. Whether you have a question, a suggestion, or just want to say hello - reach out!
-          </p>
-        </div>
-      </motion.section>
+      <PageHeader
+        title="Get In Touch"
+        subtitle="We'd love to hear from you. Whether you have a question, a suggestion, or just want to say hello - reach out!"
+        image={contactHeroImage}
+      />
       
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">

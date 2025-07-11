@@ -5,6 +5,9 @@ import { useCart } from '@/contexts/CartContext';
 import { useAlert } from '@/contexts/AlertContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import toast from 'react-hot-toast';
+import PageHeader from '../../components/layout/PageHeader'; // Import the new component
+
+const menuHeroImage = 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80';
 
 // Utility function for rendering stars
 const renderStars = (rating) => {
@@ -34,10 +37,15 @@ const DishCard = memo(({ dish, onAddToCart }) => {
     onAddToCart(dish);
   }, [dish, onAddToCart]);
 
+  const handleImageError = (e) => {
+    e.target.onerror = null; // Prevent infinite loop if placeholder fails
+    e.target.src = `https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500&q=80`; // Fallback image
+  };
+
   return (
     <motion.div
-      className="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden group"
-      whileHover={{ y: -2 }}
+      className="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden group flex flex-col"
+      whileHover={{ y: -5 }}
       layout
     >
       {/* Image Container */}
@@ -47,10 +55,15 @@ const DishCard = memo(({ dish, onAddToCart }) => {
             src={dish.image}
             alt={dish.name}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            onError={handleImageError}
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center">
-            <span className="text-4xl text-gray-400">🍽️</span>
+          <div className="w-full h-full flex items-center justify-center bg-gray-100">
+            <img 
+              src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500&q=80" 
+              alt="Placeholder" 
+              className="w-full h-full object-cover opacity-50"
+            />
           </div>
         )}
         
@@ -76,19 +89,20 @@ const DishCard = memo(({ dish, onAddToCart }) => {
       </div>
 
       {/* Content */}
-      <div className="p-6">
-        <div className="mb-4">
+      <div className="p-5 flex flex-col flex-grow">
+        <div className="flex-grow mb-4">
           <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-1">
             {dish.name}
           </h3>
-          <p className="text-gray-600 text-sm line-clamp-2 mb-3">
+          <p className="text-gray-600 text-sm line-clamp-2 h-10">
             {dish.description}
           </p>
         </div>
 
         {/* Rating */}
-        {dish.average_rating && (
-        <div className="flex items-center space-x-2 mb-4">
+        <div className="flex items-center space-x-2 mb-4 h-5">
+            {dish.average_rating ? (
+                <>
           <div className="flex">
             {renderStars(dish.average_rating || 0)}
           </div>
@@ -96,23 +110,26 @@ const DishCard = memo(({ dish, onAddToCart }) => {
             <span className="text-sm text-gray-500">
                 ({dish.rating_count})
             </span>
+                    )}
+                </>
+            ) : (
+                <span className="text-sm text-gray-400">No ratings yet</span>
           )}
         </div>
-        )}
 
         {/* Action Buttons */}
-        <div className="flex space-x-2">
+        <div className="flex space-x-3">
           <Link
             to={`/dish/${dish.id}`}
-            className="flex-1 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg font-medium transition-colors text-center text-sm"
+            className="flex-1 px-4 py-2 bg-gray-100 text-gray-800 rounded-lg font-semibold transition-colors text-center text-sm hover:bg-gray-200"
           >
-            View Details
+            View
           </Link>
           <motion.button
-            className="flex-1 px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-lg font-medium transition-colors text-sm"
+            className="flex-1 px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-lg font-semibold transition-colors text-sm"
             onClick={handleAddToCart}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
           >
             Add to Cart
           </motion.button>
@@ -236,64 +253,20 @@ const Menu = () => {
     };
   }, [showAlert]);
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <motion.div 
-          className="text-center"
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5 }}
-        >
-          <div className="relative">
-            <div className="w-16 h-16 border-4 border-orange-200 border-t-orange-600 rounded-full animate-spin mx-auto mb-4"></div>
-          </div>
-          <h2 className="text-xl font-semibold text-gray-700">Loading Menu...</h2>
-          <p className="text-gray-500">Preparing delicious dishes for you</p>
-        </motion.div>
-      </div>
-    );
-  }
-
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Hero Section */}
-      <motion.section 
-        className="bg-gradient-to-r from-orange-600 to-red-600 text-white py-12"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-      >
-        <div className="max-w-7xl mx-auto px-4 text-center">
-          <motion.h1 
-            className="text-4xl md:text-5xl font-bold mb-4"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2, duration: 0.6 }}
-          >
-            Our Menu
-          </motion.h1>
-          <motion.p 
-            className="text-xl text-orange-100 max-w-2xl mx-auto"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.6 }}
-          >
-            Discover our carefully crafted dishes made with the finest ingredients
-          </motion.p>
-        </div>
-      </motion.section>
+    <div className="bg-gray-50">
+      <PageHeader
+        title="Our Menu"
+        subtitle="Discover our carefully crafted dishes made with the finest ingredients"
+        image={menuHeroImage}
+      />
 
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        {/* Filters Section */}
-        <motion.div 
-          className="bg-white rounded-lg shadow-sm p-6 mb-8"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6, duration: 0.5 }}
-        >
-          <div className="flex flex-col lg:flex-row gap-4 items-center justify-between">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        {/* Filters and Search */}
+        <div className="bg-white p-6 rounded-xl shadow-sm mb-8 sticky top-20 z-10">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
             {/* Search */}
+            <div className="md:col-span-1">
             <div className="relative flex-1 max-w-md">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <span className="text-gray-400">🔍</span>
@@ -305,44 +278,48 @@ const Menu = () => {
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors"
               />
+              </div>
             </div>
 
             {/* Category Filter */}
-            <div className="flex flex-wrap gap-2">
+            <div className="md:col-span-2">
+              <div className="flex flex-wrap items-center gap-2">
               <motion.button
-                className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
+                  className={`px-4 py-2 rounded-full font-medium transition-all duration-200 text-sm ${
                   !selectedCategory || selectedCategory === 'all'
-                    ? 'bg-orange-600 text-white shadow-md'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      ? 'bg-orange-600 text-white shadow'
+                      : 'bg-gray-100 text-gray-700 hover:bg-orange-100'
                 }`}
                 onClick={() => handleCategoryChange('all')}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
               >
                 All
               </motion.button>
               {categories.map((category) => (
                 <motion.button
                   key={category.id}
-                  className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
+                    className={`px-4 py-2 rounded-full font-medium transition-all duration-200 text-sm ${
                     selectedCategory === category.id.toString()
-                      ? 'bg-orange-600 text-white shadow-md'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                        ? 'bg-orange-600 text-white shadow'
+                        : 'bg-gray-100 text-gray-700 hover:bg-orange-100'
                   }`}
                   onClick={() => handleCategoryChange(category.id.toString())}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                 >
                   {category.name}
                 </motion.button>
               ))}
+              </div>
             </div>
 
             {/* Sort Options */}
+            <div className="md:col-span-1 md:col-start-3">
             <select
               value={sortBy}
               onChange={(e) => handleSortChange(e.target.value)}
-              className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors"
             >
               <option value="name">Sort by Name</option>
               <option value="price_low">Price: Low to High</option>
@@ -350,7 +327,8 @@ const Menu = () => {
               <option value="rating">Sort by Rating</option>
             </select>
           </div>
-        </motion.div>
+          </div>
+        </div>
 
         {/* Results Info */}
         <motion.div 
@@ -366,15 +344,39 @@ const Menu = () => {
         </motion.div>
 
         {/* Dishes Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {filteredDishes.map((dish) => (
-                <DishCard 
-                  key={dish.id} 
-                  dish={dish} 
-                  onAddToCart={handleAddToCart}
-                />
+        {loading ? (
+          <div className="text-center py-16">
+            <div className="w-16 h-16 border-4 border-orange-200 border-t-orange-600 rounded-full animate-spin mx-auto mb-4"></div>
+            <p className="text-gray-600">Loading our delicious dishes...</p>
+          </div>
+        ) : (
+          <AnimatePresence>
+            {filteredDishes.length > 0 ? (
+              <motion.div
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5 }}
+              >
+                {filteredDishes.map(dish => (
+                  <DishCard key={dish.id} dish={dish} onAddToCart={handleAddToCart} />
               ))}
-        </div>
+              </motion.div>
+            ) : (
+              <motion.div
+                className="text-center py-16"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+              >
+                <h3 className="text-2xl font-semibold text-gray-800">No Dishes Found</h3>
+                <p className="text-gray-500 mt-2">
+                  Try adjusting your search or category filters.
+                </p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        )}
       </div>
     </div>
   );

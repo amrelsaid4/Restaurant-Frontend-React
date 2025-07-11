@@ -8,6 +8,7 @@ import { adminAPI } from '../../services/api';
 const AdminDashboard = () => {
   const [stats, setStats] = useState(null);
   const [recentOrders, setRecentOrders] = useState([]);
+  const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -17,13 +18,15 @@ const AdminDashboard = () => {
   const fetchDashboardData = async () => {
     try {
       setLoading(true);
-      const [statsRes, ordersRes] = await Promise.all([
+      const [statsRes, ordersRes, messagesRes] = await Promise.all([
         adminAPI.getDashboardStats(),
-        adminAPI.getOrders({ limit: 5 })
+        adminAPI.getOrders({ limit: 5 }),
+        adminAPI.getMessages({ limit: 5 })
       ]);
       
       setStats(statsRes);
       setRecentOrders(ordersRes.results || ordersRes);
+      setMessages(messagesRes.results || messagesRes);
     } catch (error) {
       toast.error('Failed to load dashboard data');
     } finally {
@@ -215,6 +218,30 @@ const AdminDashboard = () => {
                   </div>
                 ))}
               </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Recent Messages Section */}
+        <div className="mt-8">
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-6">
+              Recent Messages
+            </h3>
+            <div className="space-y-4">
+              {messages.length > 0 ? (
+                messages.map((msg) => (
+                  <div key={msg.id} className="p-4 bg-gray-50 rounded-lg">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="font-semibold text-gray-800">{msg.name}</span>
+                      <span className="text-xs text-gray-500">{new Date(msg.created_at).toLocaleString()}</span>
+                    </div>
+                    <p className="text-sm text-gray-700 line-clamp-2">{msg.message}</p>
+                  </div>
+                ))
+              ) : (
+                <p className="text-center text-gray-500 py-4">No recent messages.</p>
+              )}
             </div>
           </div>
         </div>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import toast from 'react-hot-toast';
 import { useAuth } from '@/contexts/AuthContext';
@@ -19,6 +19,16 @@ const Login = () => {
   
   const { login, adminLogin, isAuthenticated, isAdmin, user, loading: authLoading, initialized } = useAuth();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
+  useEffect(() => {
+    if (searchParams.get('verified') === 'true') {
+      toast.success('Your email has been successfully verified! You can now log in.');
+      // Optional: remove the query param from URL without reloading
+      navigate('/login', { replace: true });
+    }
+  }, [searchParams, navigate]);
+
 
   // 🔥 KEY FIX: Wait for auth state to be ready before redirecting
   useEffect(() => {
@@ -214,7 +224,7 @@ const Login = () => {
             </motion.div>
 
             {/* Login Tabs */}
-            <div className="flex justify-center rounded-lg bg-gray-100 p-1 mb-6">
+            <div className="flex justify-center rounded-lg bg-gray-100 p-2 mb-6 space-x-3">
               <button
                 onClick={() => handleTabChange('customer')}
                 className={`w-full px-3 py-2 text-sm font-medium rounded-md transition-colors ${

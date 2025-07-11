@@ -17,17 +17,6 @@ const Footer = () => {
             <p className="text-gray-400 mb-6">
               We offer the finest authentic Eastern and Arabic dishes with the highest quality and best service in a comfortable and family-friendly atmosphere.
             </p>
-            <div className="flex space-x-4">
-              <div className="p-2 bg-gray-800 rounded hover:bg-gray-700 transition-colors cursor-pointer">
-                <span className="text-xl">📱</span>
-              </div>
-              <div className="p-2 bg-gray-800 rounded hover:bg-gray-700 transition-colors cursor-pointer">
-                <span className="text-xl">📧</span>
-              </div>
-              <div className="p-2 bg-gray-800 rounded hover:bg-gray-700 transition-colors cursor-pointer">
-                <span className="text-xl">📍</span>
-              </div>
-            </div>
           </div>
 
           {/* Quick Links */}
@@ -84,21 +73,6 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Subscribe to Newsletter */}
-        <div className="mt-12 pt-8 border-t border-gray-800 text-center">
-          <h4 className="text-2xl font-semibold mb-4 text-white">Subscribe to Newsletter</h4>
-          <p className="text-gray-400 mb-6 max-w-2xl mx-auto">Subscribe to receive the latest offers and new dishes directly to your email</p>
-          <div className="flex flex-col sm:flex-row max-w-md mx-auto">
-            <input
-              type="email"
-              placeholder="Enter your email"
-              className="flex-1 px-4 py-3 text-gray-900 rounded-l-lg sm:rounded-r-none rounded-r-lg border border-gray-600 focus:outline-none focus:ring-2 focus:ring-orange-500 bg-gray-700 text-white placeholder-gray-400"
-            />
-            <button className="px-6 py-3 bg-orange-600 hover:bg-orange-700 text-white rounded-r-lg sm:rounded-l-none rounded-l-lg transition-colors duration-300">
-              Subscribe
-            </button>
-          </div>
-        </div>
 
         {/* Bottom Bar */}
         <div className="mt-8 pt-8 border-t border-gray-800 text-center">

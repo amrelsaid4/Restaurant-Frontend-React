@@ -50,16 +50,6 @@ function Register() {
       newErrors.email = 'Email is invalid';
     }
     
-    if (!formData.phone.trim()) {
-      newErrors.phone = 'Phone number is required for delivery';
-    } else if (!/^\+?[\d\s\-\(\)]{10,}$/.test(formData.phone)) {
-      newErrors.phone = 'Please enter a valid phone number';
-    }
-    
-    if (!formData.address.trim()) {
-      newErrors.address = 'Address is required for delivery';
-    }
-    
     if (!formData.password) {
       newErrors.password = 'Password is required';
     } else if (formData.password.length < 6) {
@@ -86,19 +76,14 @@ function Register() {
     try {
       const { confirmPassword, ...userData } = formData;
       const response = await authAPI.register(userData);
-
-      // DEV-ONLY: Display verification code if backend sends it
-      if (response && response.verification_code) {
-        toast.success(`DEV: Verification Code is ${response.verification_code}`, { duration: 10000 });
-      }
       
-      toast.success('Account created successfully! Please verify your phone number.');
-      navigate('/verify-phone', { 
+      toast.success('Account created! Please check your email to verify your account.');
+      navigate('/check-email', { 
         state: { 
           email: formData.email,
-          phone: formData.phone
         } 
       });
+
     } catch (error) {
       console.error('Registration failed:', error.response?.data || error.message);
       if (error.response?.data) {
@@ -111,16 +96,6 @@ function Register() {
                 setErrors({ username: serverErrors.error });
             } else if (errorMsg.includes('email')) {
                 setErrors({ email: serverErrors.error });
-            } else if (errorMsg.includes('phone number already exists')) {
-                // Smartly handle the case where the user didn't complete verification
-                toast.success("It looks like you've tried registering before. We've sent a new code!");
-                navigate('/verify-phone', {
-                    state: {
-                        email: formData.email,
-                        phone: formData.phone
-                    }
-                });
-                return; // Stop further execution
             } else {
                 setErrors({ form: serverErrors.error });
             }
@@ -353,14 +328,13 @@ function Register() {
               {/* Phone - make it required */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Phone Number *
+                  Phone Number (Optional)
                 </label>
                 <motion.input
                   type="tel"
                   name="phone"
                   value={formData.phone}
                   onChange={handleChange}
-                  required
                   className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors ${
                     errors.phone ? 'border-red-300' : 'border-gray-300'
                   }`}

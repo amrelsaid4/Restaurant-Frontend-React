@@ -1,12 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import PageHeader from '../../components/layout/PageHeader'; // Import the new component
 
 const aboutHero = 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80';
 const chefImage = 'https://images.unsplash.com/photo-1581299894007-aaa50297cf16?ixlib=rb-4.0.3&auto=format&fit=crop&w=774&q=80';
-const teamMember1 = 'https://images.unsplash.com/photo-1547425260-769c1e14c2b8?ixlib=rb-4.0.3&auto=format&fit=crop&w=870&q=80';
+const teamMember1 = 'https://i.pinimg.com/736x/4d/da/77/4dda779adb4bb41b4ad655378ef1e99d.jpg';
 const teamMember2 = 'https://images.unsplash.com/photo-1557862921-37829c790f19?ixlib=rb-4.0.3&auto=format&fit=crop&w=871&q=80';
-const teamMember3 = 'https://images.unsplash.com/photo-1614283233556-f35b7c841529?ixlib=rb-4.0.3&auto=format&fit=crop&w=774&q=80';
+const teamMember3 = 'https://i.pinimg.com/736x/9c/5e/76/9c5e763e32a2cd7060a9e8aefb8cb5d9.jpg';
 
 const About = () => {
   const fadeIn = {
@@ -23,30 +24,11 @@ const About = () => {
 
   return (
     <div className="bg-gray-50">
-      {/* Hero Section */}
-      <motion.section 
-        className="relative bg-cover bg-center h-96" 
-        style={{ backgroundImage: `url(${aboutHero})` }}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.8 }}
-      >
-        <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <motion.div 
-            className="text-center text-white"
-            variants={fadeIn}
-            initial="hidden"
-            animate="visible"
-          >
-            <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight">
-              Our Culinary Story
-            </h1>
-            <p className="mt-4 text-lg md:text-xl max-w-2xl mx-auto">
-              Discover the passion and tradition behind every dish we serve.
-            </p>
-          </motion.div>
-        </div>
-      </motion.section>
+      <PageHeader 
+        title="Our Culinary Story"
+        subtitle="Discover the passion and tradition behind every dish we serve."
+        image={aboutHero}
+      />
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
