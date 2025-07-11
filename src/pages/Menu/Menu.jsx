@@ -50,22 +50,15 @@ const DishCard = memo(({ dish, onAddToCart }) => {
     >
       {/* Image Container */}
       <div className="relative h-48 bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden">
-        {dish.image ? (
-          <img
-            src={dish.image}
-            alt={dish.name}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-            onError={handleImageError}
-          />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center bg-gray-100">
-            <img 
-              src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500&q=80" 
-              alt="Placeholder" 
-              className="w-full h-full object-cover opacity-50"
-            />
-          </div>
-        )}
+        <img
+          src={dish.image || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500&q=80'}
+          alt={dish.name}
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          onError={(e) => {
+            e.target.onerror = null; 
+            e.target.src = 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500&q=80';
+          }}
+        />
         
         {/* Price Badge */}
         <div className="absolute top-3 right-3 bg-white bg-opacity-95 backdrop-blur-sm px-3 py-1 rounded-full">
