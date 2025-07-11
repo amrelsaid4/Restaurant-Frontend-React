@@ -268,29 +268,29 @@ const Cart = () => {
                             <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm4 0a1 1 0 012 0v6a1 1 0 11-2 0V8z" clipRule="evenodd" />
                           </svg>
                         </motion.button>
-                      </div>
+                    </div>
 
                       {/* Quantity & Notes for larger screens */}
                       <div className="hidden sm:flex items-center justify-between mt-2">
                         {/* Quantity Control */}
                         <div className="flex items-center">
-                          <motion.button
+                      <motion.button
                             className="w-8 h-8 rounded-full bg-gray-200 text-gray-700 flex items-center justify-center font-bold"
-                            onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
-                            whileTap={{ scale: 0.9 }}
-                          >
-                            -
-                          </motion.button>
+                        onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
+                        whileTap={{ scale: 0.9 }}
+                      >
+                        -
+                      </motion.button>
                           <span className="mx-3 font-semibold">{item.quantity}</span>
-                          <motion.button
+                      <motion.button
                             className="w-8 h-8 rounded-full bg-orange-500 text-white flex items-center justify-center font-bold"
-                            onClick={() => handleQuantityChange(item.id, item.quantity + 1)}
-                            whileTap={{ scale: 0.9 }}
-                          >
-                            +
-                          </motion.button>
-                        </div>
-                        
+                        onClick={() => handleQuantityChange(item.id, item.quantity + 1)}
+                        whileTap={{ scale: 0.9 }}
+                      >
+                        +
+                      </motion.button>
+                    </div>
+
                         {item.specialInstructions && (
                           <div className="text-sm text-gray-500 bg-yellow-100 p-2 rounded-md">
                             <strong>Note:</strong> {item.specialInstructions}
@@ -314,7 +314,7 @@ const Cart = () => {
               <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-6 border-b pb-4">
                 Order Summary
               </h2>
-              
+
               {/* Promo Code */}
               <div className="mb-6">
                 <label htmlFor="promo-code" className="block text-sm font-medium text-gray-700 mb-2">

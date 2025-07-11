@@ -344,33 +344,52 @@ const AdminDishes = () => {
                 <div className="mb-6">
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Dish Image
-                  </label>
-                  <div className="mt-1 flex items-center">
+                    </label>
+                    
+                  <div className="flex gap-6">
                     {imagePreview && (
-                      <div className="mr-4 flex-shrink-0">
-                        <img className="h-20 w-20 rounded-md object-cover" src={imagePreview} alt="Preview" />
+                      <div className="relative">
+                            <img 
+                              src={imagePreview} 
+                          alt="Preview" 
+                          className="w-32 h-32 object-cover rounded-lg border border-gray-200"
+                        />
+                            <button
+                              type="button"
+                              onClick={removeImage}
+                          className="absolute -top-2 -right-2 bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm hover:bg-red-700"
+                        >
+                          ×
+                            </button>
                       </div>
                     )}
-                    <div className="w-full">
-                      <input
-                        id="image"
-                        name="image"
-                        type="file"
-                        onChange={handleImageChange}
-                        className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none"
-                      />
+
+                    <div className="flex-1">
+                      <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-orange-400 transition-colors">
+                          <input
+                            type="file"
+                            accept="image/*"
+                            onChange={handleImageChange}
+                          className="hidden"
+                          id="dish-image"
+                        />
+                        <label htmlFor="dish-image" className="cursor-pointer">
+                          <div className="text-gray-400 mb-2">
+                            <svg className="w-8 h-8 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                            </svg>
+                          </div>
+                          <p className="text-sm text-gray-600">
+                            Click to upload or drag and drop
+                          </p>
+                          <p className="text-xs text-gray-400 mt-1">
+                            PNG, JPG, GIF up to 5MB
+                          </p>
+                        </label>
+                      </div>
+                      </div>
                     </div>
-                    {imagePreview && (
-                      <button
-                        type="button"
-                        onClick={removeImage}
-                        className="ml-4 text-sm font-medium text-red-600 hover:text-red-800"
-                      >
-                        Remove
-                      </button>
-                    )}
                   </div>
-                </div>
 
                 <div className="flex gap-6 mb-6">
                   <label className="flex items-center">
@@ -434,12 +453,12 @@ const AdminDishes = () => {
                   {/* Dish Image */}
                   <div className="lg:w-48">
                     <img 
-                      src={dish.image || "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=100&q=80"} 
+                      src={dish.image || "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"} 
                       alt={dish.name}
                       className="w-full h-32 lg:h-40 object-cover rounded-lg"
                       onError={(e) => {
                         e.target.onerror = null; 
-                        e.target.src = 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=100&q=80';
+                        e.target.src = 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';
                       }}
                     />
                   </div>
