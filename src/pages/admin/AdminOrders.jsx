@@ -173,7 +173,7 @@ const AdminOrders = () => {
                       <div>
                         <span className="text-sm text-gray-500">Customer</span>
                         <p className="font-medium text-gray-900">
-                          {order.customer.user.first_name} {order.customer.user.last_name}
+                          {order.customer?.user?.first_name || 'N/A'} {order.customer?.user?.last_name || ''}
                         </p>
                       </div>
                       <div>
@@ -198,7 +198,7 @@ const AdminOrders = () => {
                       <div className="space-y-2">
                           {order.items.map((item, index) => (
                           <div key={index} className="flex justify-between items-center">
-                            <span className="text-gray-700">{item.dish.name}</span>
+                            <span className="text-gray-700">{item.dish?.name || 'N/A'}</span>
                             <span className="text-gray-600 font-medium">Qty: {item.quantity}</span>
                             </div>
                           ))}
