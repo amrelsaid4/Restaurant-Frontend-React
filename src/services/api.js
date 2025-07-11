@@ -89,22 +89,26 @@ const makeAuthenticatedRequest = async (method, url, data = null, options = {}) 
       config.data = data;
     }
 
+    if (data instanceof FormData) {
+      if (config.headers) {
+        config.headers['Content-Type'] = undefined;
+      }
+    }
+
     console.log('📡 Making authenticated request to:', url, 'with headers:', config.headers);
     const response = await api(config);
     return response.data;
   } catch (error) {
-    if (error.response?.status === 403) {
-      // CSRF token might be expired, try to refresh it
-      await fetchCSRFToken();
-      throw error;
-    }
-    if (error.response?.status === 401) {
-      // Session expired, clear local storage
-      console.log('❌ Session expired, clearing localStorage');
+    const status = error.response?.status;
+    if (status === 401 || status === 403) {
+      // Session expired, forbidden, or invalid.
+      // The backend returns 403 for invalid session keys.
+      // Clearing local storage will force a re-login via the AuthContext.
+      console.log(`❌ Auth error (${status}). Session invalid, clearing localStorage.`);
       localStorage.removeItem('session_key');
       localStorage.removeItem('user_data');
     }
-    throw error;
+    throw error; // Always re-throw so the calling function knows about the error.
   }
 };
 
@@ -147,23 +151,9 @@ export const authAPI = {
     return makeAuthenticatedRequest('POST', '/api/register/', userData);
   },
 
-  verifyPhone: async (verificationData) => {
-    console.log('📡 Phone verification API call');
-    const response = await api.post('/api/verify-phone/', verificationData);
-    
-    // On successful verification, backend should return session_key and user_data
-    if (response.data.session_key && response.data.user) {
-      localStorage.setItem('session_key', response.data.session_key);
-      localStorage.setItem('user_data', JSON.stringify(response.data.user));
-      console.log('💾 Session data saved after phone verification.');
-    }
-    
-    return response.data;
-  },
-
-  resendVerificationCode: async (data) => {
-    console.log('📡 Resend verification code API call');
-    return api.post('/api/resend-verify-code/', data);
+  resendVerificationEmail: async (email) => {
+    console.log('📡 Resend verification email API call');
+    return makeAuthenticatedRequest('POST', '/api/resend-verification-email/', { email });
   },
 
   logout: async () => {
@@ -241,6 +231,11 @@ export const restaurantAPI = {
   getHomepageStats: () => makeAuthenticatedRequest('GET', '/api/homepage-stats/')
 };
 
+// Contact API
+export const contactAPI = {
+  sendMessage: (messageData) => makeAuthenticatedRequest('POST', '/api/contact/', messageData),
+};
+
 // Checkout API
 export const checkoutAPI = {
   createCheckoutSession: (checkoutData) => makeAuthenticatedRequest('POST', '/api/stripe/create-checkout-session/', checkoutData),
@@ -259,9 +254,44 @@ export const adminAPI = {
   
   // Dishes
   getDishes: () => makeAuthenticatedRequest('GET', '/api/admin/dishes/'),
-  createDish: (dishData) => makeAuthenticatedRequest('POST', '/api/admin/dishes/', dishData),
-  updateDish: (dishId, dishData) => makeAuthenticatedRequest('PATCH', `/api/admin/dishes/${dishId}/`, dishData),
-  patchDish: (dishId, dishData) => makeAuthenticatedRequest('PATCH', `/api/admin/dishes/${dishId}/`, dishData),
+  createDish: async (dishData) => {
+    const formData = new FormData();
+    for (const key in dishData) {
+      if (key === 'image' && dishData.image instanceof File) {
+        formData.append('image', dishData.image, dishData.image.name);
+      } else if (dishData[key] !== null && dishData[key] !== undefined) {
+        formData.append(key, dishData[key]);
+      }
+    }
+    
+    // Log the data before sending, as you suggested.
+    console.log("--- Sending FormData for CREATE ---");
+    for (const [key, value] of formData.entries()) {
+      console.log(key, value);
+    }
+
+    return makeAuthenticatedRequest('POST', '/api/admin/dishes/', formData);
+  },
+  
+  updateDish: async (dishId, dishData) => {
+    const formData = new FormData();
+    for (const key in dishData) {
+      // For updates, only append the image if a new one is provided.
+      if (key === 'image' && dishData.image instanceof File) {
+        formData.append('image', dishData.image, dishData.image.name);
+      } else if (key !== 'image' && dishData[key] !== null && dishData[key] !== undefined) {
+        formData.append(key, dishData[key]);
+      }
+    }
+    
+    console.log(`--- Sending FormData for UPDATE (Dish ID: ${dishId}) ---`);
+    for (const [key, value] of formData.entries()) {
+      console.log(key, value);
+    }
+    
+    return makeAuthenticatedRequest('PATCH', `/api/admin/dishes/${dishId}/`, formData);
+  },
+  
   setDishAvailability: (dishId, isAvailable) => makeAuthenticatedRequest('PATCH', `/api/admin/dishes/${dishId}/set-availability/`, { is_available: isAvailable }),
   deleteDish: (dishId) => makeAuthenticatedRequest('DELETE', `/api/admin/dishes/${dishId}/`),
   
@@ -272,7 +302,10 @@ export const adminAPI = {
   deleteCategory: (categoryId) => makeAuthenticatedRequest('DELETE', `/api/admin/categories/${categoryId}/`),
   
   // Customers
-  getCustomers: () => makeAuthenticatedRequest('GET', '/api/admin/customers/')
+  getCustomers: () => makeAuthenticatedRequest('GET', '/api/admin/customers/'),
+
+  // Contact Messages
+  getMessages: () => makeAuthenticatedRequest('GET', '/api/admin/messages/'),
 };
 
 export default api;
@@ -328,7 +361,7 @@ export const updateOrderStatus = adminAPI.updateOrderStatus;
 export const getDishes = adminAPI.getDishes;
 export const createDish = adminAPI.createDish;
 export const updateDish = adminAPI.updateDish;
-export const patchDish = adminAPI.patchDish;
+export const patchDish = adminAPI.updateDish; // Use updateDish for patch as well, as it handles FormData correctly
 export const setDishAvailability = adminAPI.setDishAvailability;
 export const deleteDish = adminAPI.deleteDish;
 export const getCategories = adminAPI.getCategories;
@@ -337,6 +370,7 @@ export const updateCategory = adminAPI.updateCategory;
 export const patchCategory = adminAPI.updateCategory; // alias for updateCategory
 export const deleteCategory = adminAPI.deleteCategory;
 export const getCustomers = adminAPI.getCustomers;
+export const getMessages = adminAPI.getMessages; // Added for backward compatibility
 
 // Named exports for backward compatibility
 export const checkUserType = authAPI.checkUserType;
@@ -349,7 +383,7 @@ export const loginAdmin = async (credentials) => {
     await fetchCSRFToken();
     console.log('🔑 CSRF token ready for admin login');
     
-    const response = await api.post('/api/admin/login/', credentials, {
+    const response = await api.post('/api/admin/login/', credentials, { // Reverted to the correct admin-specific endpoint
       withCredentials: true,
             headers: {
         'X-CSRFToken': csrfToken,
@@ -382,8 +416,5 @@ export const getDishById = async (dishId) => {
 export const createReview = async (dishId, reviewData) => {
     return makeAuthenticatedRequest('POST', `/api/dishes/${dishId}/reviews/`, reviewData);
 };
-
-// Admin API calls
-export const getAdminDashboardStats = () => api.get('/admin/dashboard/');
 
  
