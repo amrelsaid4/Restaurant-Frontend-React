@@ -255,7 +255,7 @@ const Cart = () => {
                       <div className="flex justify-between items-start">
                         <div>
                           <h3 className="font-semibold text-gray-800 truncate sm:text-lg">{item.name}</h3>
-                          <p className="text-sm text-gray-500">${item.price.toFixed(2)}</p>
+                          <p className="text-sm text-gray-500">${parseFloat(item.price).toFixed(2)}</p>
                         </div>
                         <motion.button
                           className="ml-2 flex-shrink-0 text-red-500 hover:text-red-700"
