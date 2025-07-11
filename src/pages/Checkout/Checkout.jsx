@@ -81,10 +81,20 @@ const Checkout = () => {
 
     setLoading(true);
     try {
+      // Consolidate special instructions
+      const itemInstructions = checkoutData.items
+        .filter(item => item.special_instructions)
+        .map(item => `${item.name}: ${item.special_instructions}`)
+        .join('; ');
+
+      const allInstructions = [itemInstructions, orderForm.specialInstructions]
+        .filter(Boolean)
+        .join(' | General Notes: ');
+
       const orderPayload = {
-        items: checkoutData.items,
+        items: checkoutData.items.map(({ name, special_instructions, ...rest }) => rest), // pass only dish_id, quantity, price
         delivery_address: `${orderForm.address}, ${orderForm.city}, ${orderForm.zipCode}`,
-        special_instructions: orderForm.specialInstructions,
+        special_instructions: allInstructions,
       };
 
       const response = await checkoutAPI.createCheckoutSession(orderPayload);
