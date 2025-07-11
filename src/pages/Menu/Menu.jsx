@@ -255,81 +255,67 @@ const Menu = () => {
 
   return (
     <div className="bg-gray-50">
-      <PageHeader
-        title="Our Menu"
-        subtitle="Discover our carefully crafted dishes made with the finest ingredients"
-        image={menuHeroImage}
+      <PageHeader 
+        title="Our Delicious Menu"
+        subtitle="Explore our wide range of dishes, crafted with the freshest ingredients."
+        backgroundImage={menuHeroImage}
       />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Filters and Search */}
-        <div className="bg-white p-6 rounded-xl shadow-sm mb-8 sticky top-20 z-10">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+      {/* Filters Bar */}
+      <div className="sticky top-0 bg-white z-10 shadow-sm py-4">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="flex flex-col md:flex-row gap-4 items-center">
             {/* Search */}
-            <div className="md:col-span-1">
-            <div className="relative flex-1 max-w-md">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <span className="text-gray-400">🔍</span>
-              </div>
-              <input
-                type="text"
-                placeholder="Search dishes..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors"
-              />
+            <div className="w-full md:w-1/3">
+              <div className="relative">
+                <span className="absolute inset-y-0 left-0 flex items-center pl-3">
+                  <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                </span>
+                <input
+                  type="text"
+                  placeholder="Search dishes..."
+                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
               </div>
             </div>
 
-            {/* Category Filter */}
-            <div className="md:col-span-2">
-              <div className="flex flex-wrap items-center gap-2">
-              <motion.button
-                  className={`px-4 py-2 rounded-full font-medium transition-all duration-200 text-sm ${
-                  !selectedCategory || selectedCategory === 'all'
+            {/* Categories */}
+            <div className="w-full md:w-2/3 overflow-x-auto pb-2">
+              <div className="flex space-x-3">
+                <button
+                  onClick={() => handleCategoryChange('all')}
+                  className={`px-4 py-2 rounded-lg font-medium transition-colors flex-shrink-0 ${
+                    !selectedCategory || selectedCategory === 'all'
                       ? 'bg-orange-600 text-white shadow'
-                      : 'bg-gray-100 text-gray-700 hover:bg-orange-100'
-                }`}
-                onClick={() => handleCategoryChange('all')}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-              >
-                All
-              </motion.button>
-              {categories.map((category) => (
-                <motion.button
-                  key={category.id}
-                    className={`px-4 py-2 rounded-full font-medium transition-all duration-200 text-sm ${
-                    selectedCategory === category.id.toString()
-                        ? 'bg-orange-600 text-white shadow'
-                        : 'bg-gray-100 text-gray-700 hover:bg-orange-100'
+                      : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                   }`}
-                  onClick={() => handleCategoryChange(category.id.toString())}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
                 >
-                  {category.name}
-                </motion.button>
-              ))}
+                  All
+                </button>
+                {categories.map(category => (
+                  <button
+                    key={category.id}
+                    onClick={() => handleCategoryChange(String(category.id))}
+                    className={`px-4 py-2 rounded-lg font-medium transition-colors flex-shrink-0 ${
+                      selectedCategory === String(category.id)
+                        ? 'bg-orange-600 text-white shadow'
+                        : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                    }`}
+                  >
+                    {category.name}
+                  </button>
+                ))}
               </div>
             </div>
-
-            {/* Sort Options */}
-            <div className="md:col-span-1 md:col-start-3">
-            <select
-              value={sortBy}
-              onChange={(e) => handleSortChange(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors"
-            >
-              <option value="name">Sort by Name</option>
-              <option value="price_low">Price: Low to High</option>
-              <option value="price_high">Price: High to Low</option>
-              <option value="rating">Sort by Rating</option>
-            </select>
-          </div>
           </div>
         </div>
+      </div>
 
+      <div className="max-w-7xl mx-auto px-4 py-8">
         {/* Results Info */}
         <motion.div 
           className="mb-6"
