@@ -223,18 +223,14 @@ const DishDetail = () => {
             <div className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-200">
               <div className="relative">
                 <img 
-                  src={dish.image && dish.image.startsWith('http') 
-                    ? dish.image 
-                    : dish.image 
-                    ? `http://127.0.0.1:8000${dish.image}` 
-                    : 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
-                  }
-                    alt={dish.name}
+                  src={dish.image || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'}
+                  alt={dish.name}
                   className="w-full h-[400px] lg:h-[500px] object-cover"
-                    onError={(e) => {
+                  onError={(e) => {
+                    e.target.onerror = null; // Prevent infinite loop if fallback fails
                     e.target.src = 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';
-                    }}
-                  />
+                  }}
+                />
                 
                 {/* Price Badge */}
                 <div className="absolute top-4 right-4 bg-gradient-to-r from-orange-600 to-red-600 text-white px-4 py-2 rounded-full font-bold text-lg shadow-lg">
