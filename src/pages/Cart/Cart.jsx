@@ -206,11 +206,11 @@ const Cart = () => {
           {/* Cart Items */}
           <div className="lg:w-2/3">
             <motion.div 
-              className="bg-white rounded-xl shadow-sm p-6"
+              className="bg-white rounded-xl shadow-sm p-4 sm:p-6"
               variants={itemVariants}
             >
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-bold text-gray-900">
+              <div className="flex items-center justify-between mb-4 sm:mb-6">
+                <h2 className="text-xl sm:text-2xl font-bold text-gray-900">
                   Cart Items ({cartItems.length})
                 </h2>
                 <motion.button
@@ -230,13 +230,13 @@ const Cart = () => {
                 {cartItems.map((item) => (
                   <motion.div
                     key={item.id}
-                    className="flex items-center space-x-4 py-4 border-b border-gray-200 last:border-b-0"
+                    className="flex items-start sm:items-center space-x-3 sm:space-x-4 py-4 border-b border-gray-200 last:border-b-0"
                     variants={itemVariants}
                     exit="exit"
                     layout
                   >
                     {/* Image */}
-                    <div className="flex-shrink-0 w-20 h-20 bg-gradient-to-br from-orange-100 to-red-100 rounded-lg overflow-hidden">
+                    <div className="flex-shrink-0 w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-orange-100 to-red-100 rounded-lg overflow-hidden">
                       {item.image ? (
                         <img
                           src={item.image}
@@ -251,55 +251,53 @@ const Cart = () => {
                     </div>
 
                     {/* Details */}
-                    <div className="flex-grow">
-                      <h3 className="font-semibold text-gray-900 mb-1">{item.name}</h3>
-                      <p className="text-orange-600 font-medium mb-1">${parseFloat(item.price).toFixed(2)}</p>
-                      {item.specialInstructions && (
-                        <p className="text-sm text-gray-600 bg-yellow-50 px-2 py-1 rounded border-l-2 border-yellow-400">
-                          <span className="font-medium">Note:</span> {item.specialInstructions}
-                        </p>
-                      )}
-                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <h3 className="font-semibold text-gray-800 truncate sm:text-lg">{item.name}</h3>
+                          <p className="text-sm text-gray-500">${item.price.toFixed(2)}</p>
+                        </div>
+                        <motion.button
+                          className="ml-2 flex-shrink-0 text-red-500 hover:text-red-700"
+                          onClick={() => handleRemoveItem(item.id, item.name)}
+                          whileHover={{ scale: 1.1 }}
+                          whileTap={{ scale: 0.9 }}
+                          aria-label={`Remove ${item.name}`}
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm4 0a1 1 0 012 0v6a1 1 0 11-2 0V8z" clipRule="evenodd" />
+                          </svg>
+                        </motion.button>
+                      </div>
 
-                    {/* Quantity Controls */}
-                    <div className="flex items-center space-x-3">
-                      <motion.button
-                        className="w-8 h-8 rounded-full bg-gray-200 hover:bg-gray-300 flex items-center justify-center transition-colors"
-                        onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
-                      >
-                        -
-                      </motion.button>
-                      <span className="font-medium text-gray-900 min-w-[2rem] text-center">
-                        {item.quantity}
-                      </span>
-                      <motion.button
-                        className="w-8 h-8 rounded-full bg-orange-600 hover:bg-orange-700 text-white flex items-center justify-center transition-colors"
-                        onClick={() => handleQuantityChange(item.id, item.quantity + 1)}
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
-                      >
-                        +
-                      </motion.button>
+                      {/* Quantity & Notes for larger screens */}
+                      <div className="hidden sm:flex items-center justify-between mt-2">
+                        {/* Quantity Control */}
+                        <div className="flex items-center">
+                          <motion.button
+                            className="w-8 h-8 rounded-full bg-gray-200 text-gray-700 flex items-center justify-center font-bold"
+                            onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
+                            whileTap={{ scale: 0.9 }}
+                          >
+                            -
+                          </motion.button>
+                          <span className="mx-3 font-semibold">{item.quantity}</span>
+                          <motion.button
+                            className="w-8 h-8 rounded-full bg-orange-500 text-white flex items-center justify-center font-bold"
+                            onClick={() => handleQuantityChange(item.id, item.quantity + 1)}
+                            whileTap={{ scale: 0.9 }}
+                          >
+                            +
+                          </motion.button>
+                        </div>
+                        
+                        {item.specialInstructions && (
+                          <div className="text-sm text-gray-500 bg-yellow-100 p-2 rounded-md">
+                            <strong>Note:</strong> {item.specialInstructions}
+                          </div>
+                        )}
+                      </div>
                     </div>
-
-                    {/* Total Price */}
-                    <div className="text-right">
-                      <p className="font-semibold text-gray-900">
-                        ${(parseFloat(item.price) * item.quantity).toFixed(2)}
-                      </p>
-                    </div>
-
-                    {/* Remove Button */}
-                    <motion.button
-                      className="text-red-600 hover:text-red-700 p-2 rounded-full hover:bg-red-50 transition-colors"
-                      onClick={() => handleRemoveItem(item.id, item.name)}
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.9 }}
-                    >
-                      🗑️
-                    </motion.button>
                   </motion.div>
                 ))}
               </AnimatePresence>
@@ -309,52 +307,43 @@ const Cart = () => {
           {/* Order Summary */}
           <div className="lg:w-1/3">
             <motion.div 
-              className="bg-white rounded-xl shadow-sm p-6 sticky top-4"
+              className="bg-white rounded-xl shadow-sm p-4 sm:p-6"
               variants={itemVariants}
+              style={{ position: 'sticky', top: '2rem' }}
             >
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">Order Summary</h2>
-
+              <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-6 border-b pb-4">
+                Order Summary
+              </h2>
+              
               {/* Promo Code */}
               <div className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="promo-code" className="block text-sm font-medium text-gray-700 mb-2">
                   Promo Code
                 </label>
-                <div className="flex space-x-2">
+                <div className="flex">
                   <input
                     type="text"
+                    id="promo-code"
                     value={promoCode}
                     onChange={(e) => setPromoCode(e.target.value)}
                     placeholder="Enter promo code"
-                    className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors"
+                    className="flex-grow w-full px-3 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    disabled={loading}
                   />
                   <motion.button
-                    className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                      loading
-                        ? 'bg-gray-300 cursor-not-allowed'
-                        : 'bg-orange-600 hover:bg-orange-700 text-white'
-                    }`}
                     onClick={handlePromoCode}
+                    className="px-4 py-2 bg-orange-600 text-white font-medium rounded-r-md hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-orange-500 disabled:bg-gray-400"
                     disabled={loading}
-                    whileHover={!loading ? { scale: 1.05 } : {}}
-                    whileTap={!loading ? { scale: 0.95 } : {}}
+                    whileTap={{ scale: 0.95 }}
                   >
                     {loading ? '...' : 'Apply'}
                   </motion.button>
                 </div>
-                {discount > 0 && (
-                  <motion.p 
-                    className="text-green-600 text-sm mt-2"
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                  >
-                    ✅ {(discount * 100)}% discount applied!
-                  </motion.p>
-                )}
               </div>
 
-              {/* Order Details */}
-              <div className="space-y-3 mb-6">
-                <div className="flex justify-between text-gray-700">
+              {/* Price Details */}
+              <div className="space-y-3 text-sm sm:text-base">
+                <div className="flex justify-between text-gray-600">
                   <span>Subtotal</span>
                   <span>${subtotal.toFixed(2)}</span>
                 </div>
@@ -370,7 +359,7 @@ const Cart = () => {
                   </motion.div>
                 )}
                 
-                <div className="flex justify-between text-gray-700">
+                <div className="flex justify-between text-gray-600">
                   <span>Delivery Fee</span>
                   <span className="flex items-center">
                     ${deliveryFee.toFixed(2)}

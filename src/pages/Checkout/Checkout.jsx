@@ -190,7 +190,7 @@ const Checkout = () => {
           <div className="lg:w-2/3">
             {/* Progress Steps */}
             <motion.div 
-              className="bg-white rounded-xl p-6 mb-8 shadow-sm"
+              className="bg-white rounded-xl p-4 sm:p-6 mb-8 shadow-sm"
               variants={itemVariants}
             >
               <div className="flex items-center justify-between">
@@ -208,15 +208,15 @@ const Checkout = () => {
                     >
                       {step.icon}
                     </motion.button>
-                    <div className="ml-3">
-                      <div className={`font-medium ${
+                    <div className="ml-2 sm:ml-3">
+                      <div className={`font-medium text-sm sm:text-base ${
                         currentStep >= step.id ? 'text-orange-600' : 'text-gray-600'
                       }`}>
                         {step.title}
                       </div>
                     </div>
                     {index < steps.length - 1 && (
-                      <div className={`w-16 h-0.5 mx-4 ${
+                      <div className={`w-8 sm:w-16 h-0.5 mx-2 sm:mx-4 ${
                         currentStep > step.id ? 'bg-orange-600' : 'bg-gray-200'
                       }`} />
                     )}
@@ -227,7 +227,7 @@ const Checkout = () => {
 
             {/* Step Content */}
             <motion.div 
-              className="bg-white rounded-xl p-6 shadow-sm"
+              className="bg-white rounded-xl p-4 sm:p-6 shadow-sm"
               variants={itemVariants}
             >
               <AnimatePresence mode="wait">
@@ -492,10 +492,13 @@ const Checkout = () => {
           {/* Order Summary Sidebar */}
           <div className="lg:w-1/3">
             <motion.div 
-              className="bg-white rounded-xl shadow-sm p-6 sticky top-4"
+              className="bg-white rounded-xl shadow-sm p-4 sm:p-6"
               variants={itemVariants}
+              style={{ position: 'sticky', top: '2rem' }}
             >
-              <h2 className="text-xl font-bold text-gray-900 mb-6">Order Summary</h2>
+              <h2 className="text-2xl font-bold text-gray-900 mb-6 border-b pb-4">
+                Order Summary
+              </h2>
               
               <div className="space-y-3 mb-6">
                 <div className="flex justify-between text-gray-700">

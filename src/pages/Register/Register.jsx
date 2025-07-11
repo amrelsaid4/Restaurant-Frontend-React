@@ -153,7 +153,7 @@ function Register() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-red-50 flex m-[88px]">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-red-50 flex py-12 px-4 sm:px-6 lg:px-8">
       <motion.div 
         className="flex w-full max-w-7xl mx-auto my-auto shadow-2xl rounded-2xl overflow-hidden"
         variants={containerVariants}
