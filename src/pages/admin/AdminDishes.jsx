@@ -95,31 +95,16 @@ const AdminDishes = () => {
     
     const action = async () => {
       try {
-        const submitData = new FormData();
-        
-        Object.keys(formData).forEach(key => {
-          // Skip image as it's handled separately
-          if (key === 'image') return;
-
-          // Skip fields that are empty strings, let the backend handle defaults
-          if (formData[key] === '' || formData[key] === null) return;
-          
-          submitData.append(key, formData[key]);
-        });
-        
-        // Handle image update only if a new file is selected
-        if (formData.image instanceof File) {
-          submitData.append('image', formData.image);
-        }
+        // The API functions (createDish, updateDish) are responsible for
+        // creating FormData. We just need to pass the raw form data object.
+        const dataToSend = { ...formData };
 
         if (editingDish) {
-          // For updates, we use PATCH to send only changed fields.
-          // Note: `updateDish` should ideally be a PATCH request for this to work perfectly with FormData.
-          // Assuming `updateDish` handles FormData correctly with PUT/PATCH.
-          await updateDish(editingDish.id, submitData);
+          // For updates, we use PATCH. The updateDish function in api.js handles FormData creation.
+          await updateDish(editingDish.id, dataToSend);
           showSuccess('Dish has been updated successfully!', 'Updated!');
         } else {
-          await createDish(submitData);
+          await createDish(dataToSend);
           showSuccess('New dish has been added successfully!', 'Dish Added!');
         }
         resetForm();
