@@ -453,16 +453,12 @@ const AdminDishes = () => {
                   {/* Dish Image */}
                   <div className="lg:w-48">
                     <img 
-                      src={dish.image && dish.image.startsWith('http') 
-                        ? dish.image 
-                        : dish.image 
-                        ? `http://127.0.0.1:8000${dish.image}` 
-                        : 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&auto=format&fit=crop&w=480&q=80'
-                      }
+                      src={dish.image || "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"} 
                       alt={dish.name}
                       className="w-full h-32 lg:h-40 object-cover rounded-lg"
                       onError={(e) => {
-                        e.target.src = 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&auto=format&fit=crop&w=480&q=80';
+                        e.target.onerror = null; 
+                        e.target.src = 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';
                       }}
                     />
                   </div>
