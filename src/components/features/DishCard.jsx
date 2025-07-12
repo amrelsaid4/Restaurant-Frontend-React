@@ -43,7 +43,7 @@ const DishCard = ({ dish, className = '', showCategory = false }) => {
           {/* Image Section */}
           <div className="relative h-48 overflow-hidden">
             <img 
-              src={dish.image?.startsWith('http') ? dish.image : `http://127.0.0.1:8000${dish.image}`} 
+              src={dish.image || 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'} 
               alt={dish.name}
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
               onError={(e) => {

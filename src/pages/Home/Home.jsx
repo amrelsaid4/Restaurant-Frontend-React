@@ -303,12 +303,7 @@ const Home = () => {
                 >
                   <div className="relative overflow-hidden">
                     <img 
-                      src={dish.image && dish.image.startsWith('http') 
-                        ? dish.image 
-                        : dish.image 
-                        ? `http://127.0.0.1:8000${dish.image}` 
-                        : 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&auto=format&fit=crop&w=480&q=80'
-                      } 
+                      src={dish.image || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&auto=format&fit=crop&w=480&q=80'} 
                       alt={dish.name}
                       className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-300"
                       onError={(e) => {
