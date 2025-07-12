@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAlert } from '../../contexts/AlertContext';
-import { getOrders, updateOrderStatus as updateOrderStatusAPI } from '../../services/api';
+import { getOrders, updateOrderStatus as updateOrderStatusAPI, menuAPI } from '../../services/api';
 import ConfirmModal from '../../components/common/ConfirmModal';
 import AdminNavbar from '../../components/admin/AdminNavbar';
 
@@ -10,6 +10,7 @@ const AdminOrders = () => {
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all');
   const { showSuccess, showError } = useAlert();
+  const [dishesMap, setDishesMap] = useState({});
   
   const [modalState, setModalState] = useState({
     isOpen: false,
@@ -25,11 +26,23 @@ const AdminOrders = () => {
   const fetchOrders = async () => {
     setLoading(true);
     try {
-      const data = await getOrders();
-      const ordersArray = data.results ? data.results : (Array.isArray(data) ? data : []);
+      const [ordersData, dishesData] = await Promise.all([
+        getOrders(),
+        menuAPI.getDishes()
+      ]);
+
+      const ordersArray = ordersData.results ? ordersData.results : (Array.isArray(ordersData) ? ordersData : []);
       setOrders(ordersArray);
+  
+      const dishesArray = dishesData.results ? dishesData.results : (Array.isArray(dishesData) ? dishesData : []);
+      const newDishesMap = dishesArray.reduce((map, dish) => {
+        map[dish.id] = dish;
+        return map;
+      }, {});
+      setDishesMap(newDishesMap);
+  
     } catch (error) {
-      showError('Failed to load orders.', 'Loading error');
+      showError('Failed to load orders and dishes.', 'Loading error');
       setOrders([]);
     } finally {
       setLoading(false);
@@ -196,14 +209,21 @@ const AdminOrders = () => {
                         Items ({order.items.length})
                       </h4>
                       <div className="space-y-2">
-                          {order.items.map((item, index) => (
-                          <div key={index} className="flex justify-between items-center">
-                            <span className="text-gray-700">{item.dish?.name || 'N/A'}</span>
-                            <span className="text-gray-600 font-medium">Qty: {item.quantity}</span>
+                        {order.items.map((item, index) => {
+                          const dishId = typeof item.dish === 'string'
+                            ? item.dish.split('/').filter(Boolean).pop()
+                            : item.dish;
+                          const dish = dishesMap[dishId];
+
+                          return (
+                            <div key={index} className="flex justify-between items-center">
+                              <span className="text-gray-700">{dish?.name || 'N/A'}</span>
+                              <span className="text-gray-600 font-medium">Qty: {item.quantity}</span>
                             </div>
-                          ))}
-                        </div>
+                          );
+                        })}
                       </div>
+                    </div>
 
                       {order.special_instructions && (
                       <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">

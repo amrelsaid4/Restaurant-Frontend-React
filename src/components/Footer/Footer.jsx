@@ -55,15 +55,15 @@ const Footer = () => {
             <ul className="space-y-3">
               <li className="text-gray-400 flex items-center space-x-2">
                 <span className="text-orange-400">📍</span>
-                <span>King Fahd Street, Riyadh, Saudi Arabia</span>
+                <span>Banha, Qalyubia</span>
               </li>
               <li className="text-gray-400 flex items-center space-x-2">
                 <span className="text-orange-400">📞</span>
-                <span>+966 11 234 5678</span>
+                <span>+201029708267</span>
               </li>
               <li className="text-gray-400 flex items-center space-x-2">
                 <span className="text-orange-400">📧</span>
-                <span>info@restaurant.com</span>
+                <span>amrelsaid6288@gmail.com</span>
               </li>
               <li className="text-gray-400 flex items-center space-x-2">
                 <span className="text-orange-400">🕒</span>
