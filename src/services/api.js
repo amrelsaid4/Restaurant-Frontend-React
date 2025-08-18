@@ -1,11 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://restaurant-backend-django-jak1.vercel.app';
-
-// Validate the URL format
-if (!API_BASE_URL.startsWith('http')) {
-  console.error('❌ Invalid API_BASE_URL:', API_BASE_URL);
-}
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://restaurant-backend-django-production.up.railway.app';
 
 // Create axios instance with default config
 const api = axios.create({
@@ -16,18 +11,11 @@ const api = axios.create({
   },
 });
 
-// Debug: Log the base URL
-console.log('🔗 API Base URL:', API_BASE_URL);
+
 
 // Add response interceptor to handle session cookies
 api.interceptors.response.use(
   (response) => {
-    // Check if response is HTML instead of JSON
-    if (typeof response.data === 'string' && response.data.includes('<!doctype html>')) {
-      console.error('❌ Received HTML instead of JSON from:', response.config.url);
-      return Promise.reject(new Error('Server returned HTML instead of JSON. Check if backend is running correctly.'));
-    }
-    
     // Store session key if provided
     if (response.data && response.data.session_key) {
       localStorage.setItem('session_key', response.data.session_key);
@@ -35,7 +23,6 @@ api.interceptors.response.use(
     return response;
   },
   (error) => {
-    console.error('❌ API Error:', error.response?.status, error.response?.data);
     return Promise.reject(error);
   }
 );
@@ -43,7 +30,6 @@ api.interceptors.response.use(
 // Add request interceptor to include session key
 api.interceptors.request.use(
   (config) => {
-    console.log('🌐 Making request to:', config.baseURL + config.url);
     const sessionKey = localStorage.getItem('session_key');
     if (sessionKey) {
       config.headers['X-Session-Key'] = sessionKey;
@@ -130,19 +116,6 @@ const makeAuthenticatedRequest = async (method, url, data = null, options = {}) 
 
 // Auth API
 export const authAPI = {
-  // Test endpoint to check if backend is reachable
-  testConnection: async () => {
-    try {
-      console.log('🔍 Testing backend connection...');
-      const response = await api.get('/api/health-check/');
-      console.log('✅ Backend connection successful:', response.data);
-      return response.data;
-    } catch (error) {
-      console.error('❌ Backend connection failed:', error.message);
-      throw error;
-    }
-  },
-
   login: async (credentials) => {
     try {
       console.log('📡 Customer login API call:', { identity: credentials.identity });

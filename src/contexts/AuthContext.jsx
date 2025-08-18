@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { checkUserType, loginUser, loginAdmin, logoutUser, fetchCSRFToken, authAPI } from '../services/api';
+import { checkUserType, loginUser, loginAdmin, logoutUser, fetchCSRFToken } from '../services/api';
 
 const AuthContext = createContext();
 
@@ -207,15 +207,6 @@ export const AuthProvider = ({ children }) => {
         const initAuth = async () => {
             try {
                 console.log('🚀 Initializing auth...');
-                
-                // Test backend connection first
-                try {
-                    await authAPI.testConnection();
-                    console.log('✅ Backend connection successful');
-                } catch (error) {
-                    console.error('❌ Backend connection failed:', error.message);
-                    // Continue anyway, maybe it's just the health check endpoint
-                }
                 
                 // Try to fetch CSRF token on app init
                 await fetchCSRFToken();
